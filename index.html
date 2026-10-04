@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Letterbox</title>
+    <style>
+        :root {
+            --forest-green: #1b4332;
+            --mint-green: #40916c;
+            --soft-pink: #ffb703;
+            --rose-pink: #ffb5a7;
+            --light-pink: #fcd5ce;
+            --cream: #f8edeb;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: var(--cream);
+            color: var(--forest-green);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .lily-decoration {
+            font-size: 3.5rem;
+            position: absolute;
+            opacity: 0.8;
+            user-select: none;
+            z-index: -1;
+        }
+        
+        .lily-top-left {
+            top: 20px;
+            left: 20px;
+        }
+        
+        .lily-top-right {
+            top: 20px;
+            right: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: white;
+            border: 3px solid var(--forest-green);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(27, 67, 50, 0.15);
+            box-sizing: border-box;
+            margin-top: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--forest-green);
+            font-size: 2.5rem;
+            margin-top: 0;
+            border-bottom: 2px dashed var(--rose-pink);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .form-group-full {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--rose-pink);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+            color: var(--forest-green);
+            background-color: var(--cream);
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--forest-green);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .btn {
+            background-color: var(--forest-green);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--mint-green);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .letter-box {
+            margin-top: 30px;
+            border-top: 2px dashed var(--rose-pink);
+            padding-top: 20px;
+        }
+
+        .letter {
+            background-color: var(--cream);
+            border-left: 5px solid var(--rose-pink);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .letter-header-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: var(--forest-green);
+            margin-bottom: 5px;
+        }
+
+        .letter-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .letter-timer {
+            background-color: var(--light-pink);
+            color: var(--forest-green);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            border: 1px solid var(--rose-pink);
+        }
+
+        .letter-body {
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .error {
+            color: #d90429;
+            font-weight: bold;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lily-decoration lily-top-left">🪷</div>
+    <div class="lily-decoration lily-top-right">🪷</div>
+
+    <div class="container">
+        <h1>📬 Our Secret Mailbox <span style="font-size: 2rem;">🪷</span></h1>
+
+        <form id="letter-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="from-input">From:</label>
+                    <input type="text" id="from-input" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="to-input">To:</label>
+                    <input type="text" id="to-input" placeholder="Her name" required>
+                </div>
+            </div>
+
+            <div class="form-group-full">
+                <label for="message">Your Letter</label>
+                <textarea id="message" placeholder="Write something sweet..." required></textarea>
+            </div>
+
+            <div class="form-group-full">
+                <label for="pin">Secret PIN</label>
+                <input type="password" id="pin" placeholder="Enter the 8-digit PIN" required>
+                <div id="pin-error" class="error">Incorrect Secret PIN. Access Denied.</div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn" style="width: 100%;">Send Letter</button>
+        </form>
+
+        <div class="letter-box">
+            <h2>Recent Letters (Past 48 Hours)</h2>
+            <div id="letters-container">
+                <p style="font-style: italic; color: #888; text-align: center;">Opening mailbox...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const REQUIRED_PIN = "03250904";
+        const boxId = btoa(REQUIRED_PIN).replace(/[^a-zA-Z0-9]/g, "").substring(0, 15);
+        const API_URL = `https://jsonbin.org{boxId}`;
+
+        const EXPIRATION_TIME = 172800000; // 48 hours in milliseconds
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLetters();
+            requestAutomaticNotificationPermission();
+            
+            // Poll for updates every 10 seconds
+            setInterval(loadLetters, 10000);
+            
+            // Update countdown timers on screen every single second
+            setInterval(updateCountdowns, 1000);
+        });
+
+        function requestAutomaticNotificationPermission() {
+            if ("Notification" in window && Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const fromInput = document.getElementById('from-input');
+            const toInput = document.getElementById('to-input');
+            const messageInput = document.getElementById('message');
+            const pinInput = document.getElementById('pin');
+            const pinError = document.getElementById('pin-error');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (pinInput.value !== REQUIRED_PIN) {
+                pinError.style.display = "block";
+                return;
+            }
+            pinError.style.display = "none";
+            submitBtn.disabled = true;
+
+            const currentTimestamp = Date.now();
+            const newLetter = {
+                id: "msg_" + currentTimestamp,
+                from: fromInput.value,
+                to: toInput.value,
+                message: messageInput.value,
+                timestamp: currentTimestamp,
+                dateStr: new Date().toLocaleString()
+            };
+
+            try {
+                let currentLetters = [];
+                try {
+                    const response = await fetch(API_URL);
+                    if (response.ok) {
+                        const data = await response.json();
+                        currentLetters = Array.isArray(data) ? data : [];
+                    }
+                } catch(e) {
+                    currentLetters = [];
+                }
+
+                currentLetters.unshift(newLetter);
+
+                const cutOffTime = Date.now() - EXPIRATION_TIME;
+                const freshLetters = currentLetters.filter(letter => letter.timestamp > cutOffTime);
+
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(freshLetters)
+                });
+
+                messageInput.value = "";
+                pinInput.value = "";
+
+                renderLettersUI(freshLetters);
+                alert("Your letter has been securely filed in the cloud mailbox!");
+
+            } catch (error) {
+                console.error(error);
+                alert("Network latency error. Please try sending again!");
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function loadLetters() {
